@@ -94,8 +94,12 @@
 
       <div class="form-card">
         <form class="form" id="kontaktformular" method="POST"
-              action="https://formspree.io/f/DEIN_FORMULAR_ID"><!-- GO-LIVE: echte Formspree-URL eintragen, auch in assets/js/main.js -->
+              action="https://formspree.io/f/xqerreey">
           <h2 class="heading heading--xs">Anfrageformular</h2>
+
+          <!-- Betreff der Benachrichtigung; sonst kommt bei jeder Anfrage
+               dieselbe generische Zeile im Postfach an. -->
+          <input type="hidden" name="_subject" value="Neue Terminanfrage über praxis-liora.ch">
 
           <div class="form__status form__status--error" role="alert" hidden>
             <span class="form__status-text"></span>

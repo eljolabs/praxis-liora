@@ -19,7 +19,7 @@
      Später auf eigenen Versand (z. B. Purelymail) wechseln: nur diese
      Konstante und ggf. sendViaEndpoint() unten anpassen.
      -------------------------------------------------------------------- */
-  var FORM_ENDPOINT = 'https://formspree.io/f/DEIN_FORMULAR_ID';
+  var FORM_ENDPOINT = 'https://formspree.io/f/xqerreey';
   var PRAXIS_MAIL = 'info@praxis-liora.ch';
 
   var isConfigured = FORM_ENDPOINT.indexOf('DEIN_FORMULAR_ID') === -1;
