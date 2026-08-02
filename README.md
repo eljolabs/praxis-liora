@@ -68,11 +68,19 @@ Aufnahmezeit und mögliche GPS-Koordinaten landen so nicht im Web.
 Zwei Stellen sind umgebungsabhängig und beim Wechsel auf die produktive Domain
 anzupassen:
 
-**Formularversand.** `assets/js/main.js` (Konstante `FORM_ENDPOINT`) und das
-`action`-Attribut in `kontakt.html` erwarten die Adresse eines Formulardienstes.
-Solange dort der Platzhalter steht, öffnet das Formular ersatzweise das
-Mailprogramm der Besucherin mit fertig ausgefüllter Nachricht. Ein Wechsel des
-Dienstes betrifft nur die Funktion `sendViaEndpoint()`.
+**Formularversand.** Die Adresse des Formulardienstes steht an zwei Stellen:
+als Konstante `FORM_ENDPOINT` in `assets/js/main.js` (Versand im Hintergrund)
+und als `action` in `kontakt.html` (Rückfall für Besucher ohne JavaScript).
+Beide müssen übereinstimmen.
+
+Bewusst ohne die Bibliothek `@formspree/ajax`: die wird per CDN nachgeladen und
+brächte damit die einzige Anfrage an einen Dritten in die Seite. Die AJAX-Logik
+ist von Hand implementiert und deckt mehr ab — deutschsprachige Fehlertexte,
+Lade- und Erfolgszustand, Schutz vor Doppelversand, Spam-Falle (`_gotcha`).
+
+Steht in `FORM_ENDPOINT` ein Platzhalter, schaltet das Formular selbsttätig auf
+das Mailprogramm der Besucherin um, mit fertig ausgefüllter Nachricht. Ein
+Wechsel des Dienstes betrifft nur die Funktion `sendViaEndpoint()`.
 
 **Sichtbarkeit für Suchmaschinen.** Die Seiten tragen eine `noindex`-Angabe,
 solange die Seite als Vorschau unter einer Zwischenadresse läuft. Auf der
