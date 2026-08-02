@@ -1,0 +1,569 @@
+/* ==========================================================================
+   Praxis LIORA — Design-System
+   Farben stammen aus der Design-Vorlage (OKLCH-Autorenwerte als Kommentar).
+   Ausgeliefert wird Hex: Custom Properties kennen keinen sauberen OKLCH-
+   Fallback — ein nicht unterstuetzter Wert macht die nutzende Regel ungueltig.
+   ========================================================================== */
+
+:root{
+  --bg:#faf8f2;             /* oklch(0.98 0.009 92)  */
+  --surface:#fffffd;        /* oklch(1 0.003 92)     */
+  --surface-2:#f1f1e5;      /* oklch(0.955 0.016 108)*/
+  --ink:#212c22;            /* oklch(0.28 0.024 148) */
+  --ink-soft:#546056;       /* oklch(0.475 0.022 150)*/
+  --line:#ddddd2;           /* oklch(0.895 0.016 110)*/
+  --line-strong:#8b8c81;    /* 3:1 — Rahmen von Bedienelementen (WCAG 1.4.11) */
+  --accent:#2d422f;         /* oklch(0.355 0.042 148)*/
+  --accent-2:#719171;       /* 3.3:1 — nur Grossschrift und Dekor           */
+  --accent-2-text:#547455;  /* 4.95:1 — Salbei in Fliesstextgroesse         */
+  --accent-soft:#e3f2e4;    /* oklch(0.945 0.024 148)*/
+  --accent-ink:#fdfcf8;     /* oklch(0.99 0.005 92)  */
+
+  --shadow:0 26px 50px -34px rgba(27,46,30,0.45);
+  --shadow-lifted:0 32px 60px -32px rgba(27,46,30,0.5);
+  --blob:62% 38% 46% 54% / 55% 48% 52% 45%;
+  --blob2:47% 53% 60% 40% / 45% 52% 48% 55%;
+
+  --wrap:1180px;
+  --gutter:24px;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --sans:Karla,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+/* ── Reset & Basis ─────────────────────────────────────────────────────── */
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+/* Die dekorativen Farbflaechen ragen bewusst ueber den Rand hinaus.
+   Beschnitten wird auf beiden Ebenen — sonst waechst das Dokument und es
+   entsteht seitliches Scrollen. `clip` bevorzugt: es macht das Element,
+   anders als `hidden`, nicht zum Scrollcontainer (sticky bleibt heil). */
+html,body{overflow-x:hidden}
+@supports (overflow:clip){html,body{overflow-x:clip}}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+
+/* height:auto ist zwingend: die width/height-Attribute der Bilder wirken sonst
+   als feste CSS-Hoehe und setzen jedes aspect-ratio ausser Kraft. */
+img{display:block;max-width:100%;height:auto}
+button{font:inherit;color:inherit;background:none;border:0}
+input,textarea,select{font:inherit;color:inherit}
+
+h1,h2,h3{
+  font-family:var(--serif);
+  font-weight:500;
+  margin:0;
+  text-wrap:balance;
+  letter-spacing:-0.005em;
+}
+p{margin:0;text-wrap:pretty}
+
+a{color:var(--accent);text-decoration:none}
+a:hover{
+  color:var(--accent-2-text);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+}
+
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+/* Lange Wörter (z. B. „Fussreflexzonentherapeutin") nie überlaufen lassen */
+h1,h2,h3,p,li,dd,figcaption,blockquote,label{overflow-wrap:break-word}
+
+.skip-link{
+  position:absolute;left:-9999px;top:0;z-index:100;
+  background:var(--accent);color:var(--accent-ink);
+  padding:14px 22px;border-radius:0 0 14px 0;font-weight:600;
+}
+.skip-link:focus{left:0;text-decoration:none;color:var(--accent-ink)}
+
+.visually-hidden{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+
+/* ── Layout ───────────────────────────────────────────────────────────── */
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:var(--gutter)}
+.section{padding-block:clamp(56px,8vw,104px);position:relative}
+.section--tight{padding-block:clamp(40px,6vw,76px)}
+.section--flush-top{padding-top:0}
+
+/* Salbeifarbenes Band mit organisch gerundeter Oberkante */
+.band{
+  background:var(--surface-2);
+  border-radius:clamp(32px,6vw,72px) clamp(32px,6vw,72px) 0 0;
+}
+.band--flat-bottom{border-radius:clamp(32px,6vw,72px) clamp(32px,6vw,72px) 0 0}
+
+.split{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:clamp(36px,5vw,68px);
+  align-items:center;
+}
+.split--top{align-items:start}
+.stack{display:flex;flex-direction:column}
+
+/* Dekorative, driftende Farbflächen — rein visuell, nie klickbar */
+.blob{
+  position:absolute;
+  border-radius:var(--blob);
+  background:var(--accent-soft);
+  filter:blur(12px);
+  opacity:.85;
+  pointer-events:none;
+  z-index:0;
+}
+.blob--alt{border-radius:var(--blob2);background:var(--surface-2);filter:blur(14px)}
+.section > .wrap{position:relative;z-index:1}
+
+/* ── Typografie-Bausteine ─────────────────────────────────────────────── */
+
+.eyebrow{
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:19px;
+  color:var(--accent);
+  display:block;
+}
+.eyebrow--rule{display:flex;align-items:center;gap:10px;font-size:20px}
+.eyebrow--rule::before{content:"";width:26px;height:1px;background:var(--accent);flex:none}
+
+.display{font-size:clamp(2.9rem,6.4vw,4.8rem);line-height:1.02;letter-spacing:-0.01em;font-weight:400}
+.title{font-size:clamp(2.5rem,5vw,3.7rem);line-height:1.05;font-weight:400}
+.heading{font-size:clamp(2.1rem,3.6vw,3rem);line-height:1.12;font-weight:400}
+.heading--sm{font-size:clamp(2rem,3.4vw,2.7rem)}
+/* Ueberschrift innerhalb einer Karte (Formular, Bestaetigung) — klar ueber dem
+   Fliesstext, aber untergeordnet gegenueber den Abschnittstiteln. */
+.heading--xs{font-size:1.75rem;line-height:1.2}
+
+em.accent,.accent-em{font-style:italic;color:var(--accent-2);font-weight:inherit}
+
+.lead{font-size:clamp(1.1rem,1.6vw,1.3rem);color:var(--ink-soft);line-height:1.6;max-width:36ch}
+.prose{color:var(--ink-soft);max-width:50ch}
+.role{
+  font-size:14px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);margin-top:-8px;
+}
+.label{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:999px;
+  padding:17px 32px;
+  font-size:16.5px;
+  font-weight:500;
+  min-height:52px;
+  cursor:pointer;
+  text-align:center;
+  transition:transform .25s var(--ease),border-color .25s var(--ease),
+             background-color .25s var(--ease),color .25s var(--ease),
+             box-shadow .25s var(--ease);
+}
+.btn:hover{text-decoration:none}
+
+.btn--primary{
+  background:var(--accent);
+  color:var(--accent-ink);
+  font-weight:600;
+  box-shadow:var(--shadow);
+}
+.btn--primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-lifted);color:var(--accent-ink)}
+.btn--primary:active{transform:translateY(0)}
+
+.btn--ghost{border:1px solid var(--line);color:var(--ink);background:var(--bg)}
+.btn--ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.btn--ghost:active{transform:translateY(0)}
+
+.btn--outline{border:1px solid var(--accent);color:var(--accent);background:transparent}
+.btn--outline:hover{background:var(--accent);color:var(--accent-ink)}
+
+.btn--sm{padding:13px 23px;font-size:15.5px;min-height:46px}
+.btn[disabled],.btn[aria-disabled="true"]{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* ── Kopfzeile ────────────────────────────────────────────────────────── */
+
+.site-header{
+  position:sticky;top:0;z-index:40;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+}
+.site-header__bar{
+  max-width:var(--wrap);margin:0 auto;
+  padding:12px var(--gutter);
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 0}
+.brand:hover{text-decoration:none}
+.brand img{width:44px;height:44px;flex:none}
+.brand__name{
+  font-family:var(--serif);font-size:24px;letter-spacing:.2em;
+  line-height:1.1;color:var(--accent);display:block;
+}
+.brand__tag{
+  font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);display:block;
+}
+
+.site-nav{display:flex;align-items:center;gap:28px}
+.nav-link{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  font-size:15.5px;padding:6px 0;color:var(--ink);
+}
+.nav-link:hover{color:var(--accent-2-text);text-decoration:none}
+/* Organischer Marker unter der aktiven Seite */
+.nav-link[aria-current="page"]::after{
+  content:"";display:block;width:22px;height:6px;
+  border-radius:60% 40% 55% 45% / 100% 100% 0 0;
+  background:var(--accent);
+}
+.nav-link[aria-current="page"]{color:var(--accent)}
+
+.nav-toggle{
+  display:none;
+  cursor:pointer;
+  width:48px;height:48px;
+  flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  border:1px solid var(--line);border-radius:16px;
+}
+/* Der mittlere Balken ist verkuerzt und faehrt beim Darueberfahren aus.
+   Ueber scaleX statt width: gleiche Wirkung, aber ohne Layout-Neuberechnung. */
+.nav-toggle span{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px;transition:transform .2s var(--ease)}
+.nav-toggle span:nth-child(2){transform:scaleX(.7)}
+.nav-toggle:hover span:nth-child(2){transform:scaleX(1)}
+
+@media (max-width:959px){
+  .site-nav{
+    display:none;
+    position:absolute;left:0;right:0;top:100%;
+    flex-direction:column;align-items:stretch;gap:4px;
+    background:var(--surface);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:16px var(--gutter) 26px;
+    box-shadow:var(--shadow);
+  }
+  .site-header[data-menu="open"] .site-nav{display:flex;animation:fadeUp .25s var(--ease)}
+  .nav-toggle{display:flex}
+  .nav-link{
+    flex-direction:row;justify-content:flex-start;align-items:center;
+    font-family:var(--serif);font-size:21px;
+    padding:14px 4px;min-height:52px;
+    border-bottom:1px solid var(--line);
+  }
+  .nav-link[aria-current="page"]::after{width:8px;height:8px;border-radius:50%;margin-left:4px}
+  .site-nav .btn{margin-top:18px}
+}
+
+/* Ohne JavaScript ist der Umschalter wirkungslos — dann Navigation offen zeigen */
+.no-js .nav-toggle{display:none}
+@media (max-width:959px){
+  .no-js .site-nav{display:flex;position:static;box-shadow:none;border-bottom:0;animation:none}
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────────── */
+
+.hero{padding-block:clamp(40px,6vw,84px) clamp(56px,7vw,100px)}
+.hero__content{display:flex;flex-direction:column;gap:24px}
+.hero__actions{display:flex;flex-wrap:wrap;gap:12px}
+.hero__facts{
+  display:flex;flex-wrap:wrap;gap:10px 20px;padding-top:8px;
+  font-size:14.5px;color:var(--ink-soft);align-items:center;
+}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--accent-2);flex:none}
+
+/* Bild in organischer Form, mit versetzt nachgezeichneter Kontur */
+.framed{position:relative;padding:14px}
+.framed::before{
+  content:"";position:absolute;inset:0;
+  border-radius:var(--blob);
+  border:1px solid var(--accent-2);
+  opacity:.6;transform:translate(16px,16px);
+}
+.framed--alt::before{
+  border:0;border-radius:var(--blob2);
+  background:var(--accent-soft);transform:translate(-14px,14px);
+}
+.framed img{position:relative;width:100%;border-radius:var(--blob);object-fit:cover}
+.framed--alt img{border-radius:var(--blob2)}
+.framed--portrait img{aspect-ratio:4/5}
+.framed--square img{aspect-ratio:1/1;object-position:50% 30%}
+.framed--tall img{aspect-ratio:3/4;object-position:50% 35%}
+
+/* ── Karten (Angebote) ────────────────────────────────────────────────── */
+
+.grid-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:22px;
+}
+.grid-cards--wide{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+
+.card{
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:34px 34px 34px 6px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:var(--shadow);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+  min-width:0;
+}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lifted)}
+.card--surface{background:var(--surface);border-radius:36px 36px 36px 8px}
+.card__media{width:100%;aspect-ratio:16/10;object-fit:cover}
+.card__body{padding:28px 30px 30px;display:flex;flex-direction:column;gap:14px;flex:1}
+.card--surface .card__body{padding:28px 32px 32px;gap:16px}
+.card__title{font-size:1.55rem;line-height:1.2;font-weight:500}
+.card--surface .card__title{font-size:1.7rem;line-height:1.18}
+.card__text{color:var(--ink-soft);font-size:15.5px;flex:1}
+.card--surface .card__text{font-size:16px}
+.card__meta{
+  display:flex;align-items:center;gap:12px;
+  padding-top:16px;border-top:1px solid var(--line);
+}
+.card__duration{font-size:14px;color:var(--ink-soft)}
+.card__price{
+  margin-left:auto;
+  font-family:var(--serif);font-style:italic;font-size:1.35rem;color:var(--accent);
+}
+/* Kopfzeile der Detailkarte: Dauer links, Preis als Pille rechts */
+.card__head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.card__duration--caps{font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.card__price--pill{
+  margin-left:0;
+  background:var(--accent-soft);border-radius:999px;padding:7px 16px;
+  font-size:1.2rem;white-space:nowrap;
+}
+
+/* ── Referenzen ───────────────────────────────────────────────────────── */
+
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;width:100%}
+.quote{
+  margin:0;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:36px;
+  padding:34px 30px;
+  display:flex;flex-direction:column;gap:18px;
+  transform:rotate(-1deg);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+  min-width:0;
+}
+.quote:nth-child(even){transform:rotate(1deg)}
+.quote:hover{transform:rotate(0deg) translateY(-4px);box-shadow:var(--shadow)}
+.quote__mark{font-family:var(--serif);font-size:44px;line-height:.6;color:var(--accent-2);speak:never}
+.quote blockquote{margin:0;font-family:var(--serif);font-size:1.42rem;line-height:1.42}
+.quote figcaption{font-size:13.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* ── Handlungsaufforderung ────────────────────────────────────────────── */
+
+.cta{
+  background:var(--accent-soft);
+  border-radius:clamp(32px,5vw,60px);
+  padding:clamp(36px,5vw,68px);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:32px;align-items:center;
+}
+.cta__actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end}
+@media (max-width:719px){.cta__actions{justify-content:flex-start}}
+
+/* ── Werdegang ────────────────────────────────────────────────────────── */
+
+.timeline{
+  list-style:none;margin:0;
+  padding:0 0 0 30px;
+  border-left:1px solid var(--line);
+  display:flex;flex-direction:column;gap:24px;
+}
+.timeline > li{position:relative;display:flex;flex-direction:column;gap:3px}
+.timeline > li::before{
+  content:"";position:absolute;left:-37px;top:9px;
+  width:14px;height:14px;
+  border-radius:var(--blob);
+  background:var(--surface-2);
+  border:2px solid var(--accent-2);
+}
+.timeline__title{font-family:var(--serif);font-size:1.35rem;line-height:1.3}
+.timeline__detail{font-size:14.5px;color:var(--ink-soft)}
+/* Ausbildungen eines Jahres — die Namen tragen den Inhalt, nicht das Jahr */
+.timeline__items{list-style:none;margin:2px 0 0;padding:0;display:flex;flex-direction:column;gap:3px}
+.timeline__items li{font-size:16px;line-height:1.45}
+.timeline__items .hours{color:var(--ink-soft);font-size:14.5px}
+
+.aside-stack{display:flex;flex-direction:column;gap:24px}
+@media (min-width:960px){.aside-stack{position:sticky;top:110px}}
+.aside-img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:34px 34px 34px 8px}
+
+.panel{
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:34px 34px 34px 6px;
+  padding:30px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.chips{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:10px}
+.chips li{
+  border:1px solid var(--line);border-radius:999px;
+  padding:10px 19px;font-size:15px;background:var(--accent-soft);
+}
+
+/* ── Kontakt ──────────────────────────────────────────────────────────── */
+
+.contact-list{margin:0;display:flex;flex-direction:column;gap:20px}
+.contact-list > div{display:flex;flex-direction:column;gap:3px}
+.contact-list dt{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.contact-list dd{margin:0;font-size:17px;line-height:1.5}
+.contact-list dd.big{font-family:var(--serif);font-size:1.5rem}
+.contact-list dd.row{display:flex;gap:16px;font-size:16px;flex-wrap:wrap}
+
+/* Anfahrt: verlinkt statt eingebettet — kein Kartendienst lädt ungefragt mit
+   und überträgt dabei die IP-Adresse der Besucherin an Dritte. */
+.anfahrt{
+  min-height:260px;
+  background:var(--accent-soft);
+  border-radius:clamp(28px,4vw,44px);
+  padding:clamp(26px,3.2vw,38px);
+  display:flex;flex-direction:column;gap:14px;justify-content:center;
+}
+.anfahrt__adresse{font-family:var(--serif);font-size:1.6rem;line-height:1.3}
+.anfahrt__links{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.anfahrt .btn--ghost{background:var(--surface)}
+
+/* ── Formular ─────────────────────────────────────────────────────────── */
+
+.form-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:40px 40px 40px 10px;
+  padding:clamp(26px,3.4vw,40px);
+  box-shadow:var(--shadow);
+}
+.form{display:flex;flex-direction:column;gap:18px}
+.field{display:flex;flex-direction:column;gap:7px;font-size:14px;letter-spacing:.04em;color:var(--ink-soft)}
+.field .opt{opacity:.7}
+.input{
+  background:var(--bg);
+  border:1px solid var(--line-strong);
+  border-radius:16px;
+  padding:14px 16px;
+  font-size:16.5px;           /* >=16px: verhindert Auto-Zoom in iOS Safari */
+  color:var(--ink);
+  min-height:50px;
+  width:100%;
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease);
+}
+textarea.input{resize:vertical;min-height:110px}
+select.input{
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23546056' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 18px center;
+  background-size:12px;
+  padding-right:44px;
+}
+.input:hover{border-color:var(--ink-soft)}
+.input:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.input:focus-visible{outline:0}
+/* Fehler erst nach einem Absendeversuch zeigen, nicht beim Tippen */
+.form.was-submitted .input:invalid{border-color:#9a3412;background:#fef6f2}
+.field__error{
+  display:none;
+  font-size:13.5px;color:#9a3412;letter-spacing:0;
+  text-transform:none;
+}
+.form.was-submitted .field:has(.input:invalid) .field__error{display:block}
+
+.form__note{font-size:13px;color:var(--ink-soft)}
+.form__status{
+  border-radius:16px;padding:14px 16px;font-size:15px;
+  border:1px solid;display:flex;flex-direction:column;gap:8px;
+}
+.form__status--error{background:#fef6f2;border-color:#e7c3b3;color:#7c2d12}
+.form__status[hidden]{display:none}
+
+.form-success{display:flex;flex-direction:column;gap:14px;padding:20px 0}
+.form-success[hidden]{display:none}
+
+/* Spam-Falle: für Menschen unsichtbar, für Bots ausfüllbar */
+.honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* ── Fusszeile ────────────────────────────────────────────────────────── */
+
+.site-footer{
+  background:var(--surface-2);
+  border-radius:clamp(32px,6vw,72px) clamp(32px,6vw,72px) 0 0;
+  padding:clamp(48px,6vw,80px) var(--gutter) 32px;
+  margin-top:clamp(24px,4vw,48px);
+}
+.site-footer__grid{
+  max-width:var(--wrap);margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:36px;
+}
+.site-footer h2{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-family:var(--sans);font-weight:500}
+.footer-col{display:flex;flex-direction:column;gap:10px;font-size:15.5px}
+.footer-brand{display:flex;flex-direction:column;gap:12px}
+.footer-brand img{width:56px;height:56px}
+.footer-brand__name{font-family:var(--serif);font-size:23px;letter-spacing:.2em;color:var(--accent)}
+.footer-brand__claim{
+  font-family:var(--serif);font-style:italic;font-size:19px;
+  color:var(--ink-soft);max-width:24ch;line-height:1.4;
+}
+.site-footer__base{
+  max-width:var(--wrap);margin:36px auto 0;
+  padding-top:20px;border-top:1px solid var(--line);
+  font-size:13.5px;color:var(--ink-soft);
+  display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;
+}
+.emr{width:96px;margin-top:6px;height:auto}
+
+/* ── Bewegung ─────────────────────────────────────────────────────────── */
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes drift{
+  0%{transform:translate(0,0) rotate(0deg)}
+  50%{transform:translate(10px,-16px) rotate(6deg)}
+  100%{transform:translate(0,0) rotate(0deg)}
+}
+/* Bewusst ohne fill-mode "both": laeuft die Animation nicht (abgeschaltete
+   Animationen, Spar-/Fehlerzustaende des Browsers), bleibt der Inhalt sichtbar,
+   statt dauerhaft auf opacity:0 zu haengen. Sichtbarkeit darf nie von einer
+   Animation abhaengen. */
+.page-enter{animation:fadeUp .45s var(--ease)}
+.blob{animation:drift 18s ease-in-out infinite}
+.blob--slow{animation-duration:22s;animation-direction:reverse}
+.blob--fast{animation-duration:16s}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+}
+
+/* ── Druck ────────────────────────────────────────────────────────────── */
+
+@media print{
+  .site-header,.nav-toggle,.blob,.cta,.form-card,.map,.skip-link{display:none !important}
+  body{background:#fff;color:#000;font-size:11pt}
+  .card,.quote,.panel{box-shadow:none;border:1px solid #ccc;break-inside:avoid}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:9pt;color:#555}
+  .site-footer{background:none;border-top:1px solid #ccc}
+}

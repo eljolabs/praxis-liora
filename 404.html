@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="de-CH" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seite nicht gefunden · Praxis LIORA</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#faf8f2">
+<link rel="icon" href="assets/img/logo-liora.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/styles.css">
+<!-- Eigenständig gestaltet: die Fehlerseite kann unter jedem Pfad ausgeliefert
+     werden, relative Stylesheet-Pfade greifen dort nicht zwingend. -->
+<style>
+  .fehler{
+    min-height:70vh;display:flex;flex-direction:column;justify-content:center;
+    align-items:center;text-align:center;gap:22px;
+    padding:clamp(48px,8vw,96px) 24px;position:relative;
+    font-family:Karla,system-ui,sans-serif;color:#212c22;
+  }
+  .fehler h1{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(2.5rem,6vw,4rem);line-height:1.05;font-weight:400;margin:0}
+  .fehler .zahl{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-size:19px;color:#2d422f}
+  .fehler p{max-width:44ch;color:#546056;margin:0}
+  .fehler .aktionen{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+</style>
+</head>
+<body style="background:#faf8f2">
+<main class="fehler">
+  <span class="blob" style="top:6%;right:-70px;width:280px;height:280px;background:#e3f2e4" aria-hidden="true"></span>
+  <span class="zahl">Fehler 404</span>
+  <h1>Diese Seite gibt es <em style="font-style:italic;color:#719171">nicht</em></h1>
+  <p>Vielleicht wurde sie verschoben oder der Link enthält einen Tippfehler. Von der Startseite aus finden Sie alles wieder.</p>
+  <div class="aktionen">
+    <a class="btn btn--primary" href="index.html">Zur Startseite</a>
+    <a class="btn btn--ghost" href="kontakt.html">Kontakt</a>
+  </div>
+  <p style="font-size:15px">Oder rufen Sie einfach an: <a href="tel:+41774403307">077 440 33 07</a></p>
+</main>
+</body>
+</html>

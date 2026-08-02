@@ -1,0 +1,16 @@
+.DS_Store
+
+# Rohmaterial: Designer-Vorlage und Originalbilder der alten Website.
+# Bleibt lokal — die ausgelieferten Bilder liegen fertig in assets/img/.
+Design-Vorlage mit Farbsystem/
+media old website/
+
+# Interne Projektnotizen — gehoeren nicht in das oeffentliche Repo
+NOTIZEN.md
+
+# Werkzeuge der Entwicklungsumgebung, nicht Teil der Website
+.agents/
+.claude/
+.codex/
+.gemini/
+.impeccable/

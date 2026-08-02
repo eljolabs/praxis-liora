@@ -1,0 +1,9 @@
+# Praxis LIORA
+# Hinweis: Solange die Seite als Vorschau unter github.io läuft, verhindern die
+# noindex-Angaben in den einzelnen Seiten die Aufnahme in Suchmaschinen.
+# Diese Datei gilt erst auf der eigenen Domain.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.praxis-liora.ch/sitemap.xml
