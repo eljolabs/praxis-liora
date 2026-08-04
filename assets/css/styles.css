@@ -533,6 +533,24 @@ select.input{
 }
 .emr{width:96px;margin-top:6px;height:auto}
 
+/* ── Rechtstexte ──────────────────────────────────────────────────────── */
+
+.legal{max-width:68ch;display:flex;flex-direction:column;gap:38px}
+.legal > section{display:flex;flex-direction:column;gap:10px}
+.legal h2{font-size:1.45rem;line-height:1.25;font-weight:500}
+.legal p{color:var(--ink-soft)}
+.legal address{font-style:normal;line-height:1.75;color:var(--ink)}
+.legal ul{margin:0;padding-left:1.15em;display:flex;flex-direction:column;gap:5px;color:var(--ink-soft)}
+.legal a{overflow-wrap:anywhere}
+.legal dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:8px 24px;align-items:baseline}
+.legal dt{color:var(--ink-soft);font-size:14.5px}
+.legal dd{margin:0}
+@media (max-width:479px){
+  .legal dl{grid-template-columns:1fr;gap:2px}
+  .legal dd{margin-bottom:12px}
+}
+.legal .stand{font-size:14.5px;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:20px}
+
 /* ── Bewegung ─────────────────────────────────────────────────────────── */
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
